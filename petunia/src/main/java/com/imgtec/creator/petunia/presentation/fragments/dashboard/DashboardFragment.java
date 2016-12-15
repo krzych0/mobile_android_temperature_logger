@@ -303,7 +303,7 @@ public class DashboardFragment extends BaseFragment implements ChangeSensorDelta
 
               DashboardFragment.token = Jwts.builder()
                   .setSubject("Subject")
-                  .signWith(SignatureAlgorithm.HS256, DashboardFragment.secret)
+                  .signWith(SignatureAlgorithm.HS256, DashboardFragment.secret.getBytes())
                   .compact();
 
             Configuration configuration = new Configuration(DashboardFragment.host,
