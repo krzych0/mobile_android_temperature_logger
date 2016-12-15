@@ -276,6 +276,12 @@ public class DashboardFragment extends BaseFragment implements ChangeSensorDelta
     final EditText host = (EditText) dialogView.findViewById(R.id.host);
     final EditText secret = (EditText) dialogView.findViewById(R.id.secret);
 
+    Configuration configuration = prefs.getConfiguration();
+    if (configuration != null) {
+      host.setText(configuration.getHost());
+      secret.setText(configuration.getSecret());
+    }
+
     AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogStyle);
     builder
         .setTitle(R.string.enter_credentials)

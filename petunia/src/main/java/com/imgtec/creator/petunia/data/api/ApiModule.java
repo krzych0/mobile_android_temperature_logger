@@ -36,6 +36,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.imgtec.creator.petunia.app.App;
+import com.imgtec.creator.petunia.data.Preferences;
 import com.imgtec.di.PerApp;
 
 import java.io.File;
@@ -58,21 +59,16 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class ApiModule {
 
   private static final long CACHE_DISK_SIZE = 50 * 1024 * 1024;
-//  private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZmQ2NzRmNy0yNDdjLTQ2Y2MtYTFmMi03N2Y5ZDExODg3N2EiLCJuYW1lIjoia3J6eXN6dG9mIGtvY29uIiwiYWRtaW4iOnRydWUsImlhdCI6MTQ4MTAzMDUyM30.UOD--VImOXTeBU6HE0YEQMa9OaFPiSvU9MP7DXJwh04";
 
-//  @Provides @PerApp @Named("Auth")
-//  String provideAuthToken() {
-//    return TOKEN;
-//  }
 
   @Provides @PerApp
-  HostWrapper provideHostWrapper() {
-    return new HostWrapper();
+  HostWrapper provideHostWrapper(Preferences prefs) {
+    return new HostWrapper(prefs.getConfiguration());
   }
 
   @Provides @PerApp
-  CredentialsWrapper provideCredentialsWrapper() {
-    return new CredentialsWrapper();
+  CredentialsWrapper provideCredentialsWrapper(Preferences prefs) {
+    return new CredentialsWrapper(prefs.getConfiguration());
   }
 
   @Provides @PerApp
@@ -98,11 +94,6 @@ public class ApiModule {
         .readTimeout(30, TimeUnit.SECONDS)
         .build();
     return okHttpClient;
-  }
-
-  @Provides @PerApp
-  HttpUrl provideBaseUrl() {
-    return HttpUrl.parse("http://582c1f70.ngrok.io/api/v1");
   }
 
   @Provides @PerApp

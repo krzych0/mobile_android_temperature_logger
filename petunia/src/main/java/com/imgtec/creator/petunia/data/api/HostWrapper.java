@@ -31,11 +31,17 @@
 
 package com.imgtec.creator.petunia.data.api;
 
+import com.imgtec.creator.petunia.data.Configuration;
+
 /**
  *
  */
 public class HostWrapper {
   private String host;
+
+  public HostWrapper(Configuration configuration) {
+    this.host = configuration != null ? configuration.getHost() : "";
+  }
 
   public void setHost(String host) {
     this.host = host;

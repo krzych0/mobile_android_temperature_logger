@@ -32,10 +32,18 @@
 package com.imgtec.creator.petunia.data.api;
 
 
+import com.imgtec.creator.petunia.data.Configuration;
+
 public class CredentialsWrapper {
 
   private String secret;
   private String token;
+
+  public CredentialsWrapper(Configuration configuration) {
+
+    this.secret = configuration != null ? configuration.getSecret() : "";
+    this.token = configuration != null ? configuration.getToken() : "";
+  }
 
   public String getSecret() {
     return secret;
