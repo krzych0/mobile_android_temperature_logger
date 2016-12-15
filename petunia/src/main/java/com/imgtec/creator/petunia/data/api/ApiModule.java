@@ -58,20 +58,26 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class ApiModule {
 
   private static final long CACHE_DISK_SIZE = 50 * 1024 * 1024;
-  private static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUg" +
-      "SldUIEJ1aWxkZXIiLCJpYXQiOjE0Njg0MTQxMDAsImV4cCI6MTQ5OTk1MDEwMCwiYXVkIjoid3d3LmV4YW1wbGUuY" +
-      "29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2" +
-      "NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWl" +
-      "uaXN0cmF0b3IiXX0.KTzci15ZjTlNDbJf93rbovSyX_F-4NINaqh6-Q77nW0";
+//  private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZmQ2NzRmNy0yNDdjLTQ2Y2MtYTFmMi03N2Y5ZDExODg3N2EiLCJuYW1lIjoia3J6eXN6dG9mIGtvY29uIiwiYWRtaW4iOnRydWUsImlhdCI6MTQ4MTAzMDUyM30.UOD--VImOXTeBU6HE0YEQMa9OaFPiSvU9MP7DXJwh04";
 
-  @Provides @PerApp @Named("Auth")
-  String provideAuthToken() {
-    return TOKEN;
+//  @Provides @PerApp @Named("Auth")
+//  String provideAuthToken() {
+//    return TOKEN;
+//  }
+
+  @Provides @PerApp
+  HostWrapper provideHostWrapper() {
+    return new HostWrapper();
   }
 
   @Provides @PerApp
-  AuthInterceptor provideAuthInterceptor(@Named("Auth") final String authToken) {
-    return new AuthInterceptor(authToken);
+  CredentialsWrapper provideCredentialsWrapper() {
+    return new CredentialsWrapper();
+  }
+
+  @Provides @PerApp
+  AuthInterceptor provideAuthInterceptor(CredentialsWrapper credentialsWrapper) {
+    return new AuthInterceptor(credentialsWrapper);
   }
 
   @Provides @PerApp
@@ -96,7 +102,7 @@ public class ApiModule {
 
   @Provides @PerApp
   HttpUrl provideBaseUrl() {
-    return HttpUrl.parse("http://kiwano.herokuapp.com/api/v1/");
+    return HttpUrl.parse("http://582c1f70.ngrok.io/api/v1");
   }
 
   @Provides @PerApp
@@ -108,7 +114,7 @@ public class ApiModule {
 
   @Provides @PerApp
   ApiService provideApiService(final Context appContext,
-                               final HttpUrl url,
+                               final HostWrapper url,
                                final OkHttpClient client,
                                final ExecutorService executorService) {
     return new ApiServiceImpl(appContext, url, client, executorService);

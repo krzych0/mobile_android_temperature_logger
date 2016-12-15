@@ -29,60 +29,19 @@
  *
  */
 
-package com.imgtec.creator.petunia.app;
+package com.imgtec.creator.petunia.data.api;
 
-import android.content.SharedPreferences;
-import android.os.Handler;
+/**
+ *
+ */
+public class HostWrapper {
+  private String host;
 
-import com.imgtec.creator.petunia.data.DataModuleImpl;
-import com.imgtec.creator.petunia.data.DataService;
-import com.imgtec.creator.petunia.data.api.ApiModule;
-import com.imgtec.creator.petunia.data.api.ApiService;
-import com.imgtec.creator.petunia.data.api.CredentialsWrapper;
-import com.imgtec.creator.petunia.data.api.HostWrapper;
-import com.imgtec.di.PerApp;
-
-import javax.inject.Named;
-
-import dagger.Component;
-import okhttp3.OkHttpClient;
-
-@PerApp
-@Component(
-    modules = {
-        ApplicationModule.class,
-        DataModuleImpl.class,
-        ApiModule.class
-    }
-)
-public interface ApplicationComponent {
-
-  final class Initializer {
-
-    private Initializer() {}
-
-    static ApplicationComponent init(App application) {
-      return DaggerApplicationComponent
-          .builder()
-          .applicationModule(new ApplicationModule(application))
-          .apiModule(new ApiModule())
-          .build();
-    }
+  public void setHost(String host) {
+    this.host = host;
   }
 
-  App inject(App app);
-
-  SharedPreferences getSharedPreferences();
-
-  @Named("Main") Handler getHandler();
-
-  HostWrapper getHostWrapper();
-  CredentialsWrapper getCredentialsWrapper();
-
-  DataService getDataService();
-
-  OkHttpClient getOkHttpClient();
-
-  ApiService getApiService();
+  public String getHost() {
+    return host;
+  }
 }
-

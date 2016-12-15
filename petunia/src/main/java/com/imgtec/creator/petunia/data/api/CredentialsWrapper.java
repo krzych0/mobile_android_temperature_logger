@@ -29,60 +29,27 @@
  *
  */
 
-package com.imgtec.creator.petunia.app;
+package com.imgtec.creator.petunia.data.api;
 
-import android.content.SharedPreferences;
-import android.os.Handler;
 
-import com.imgtec.creator.petunia.data.DataModuleImpl;
-import com.imgtec.creator.petunia.data.DataService;
-import com.imgtec.creator.petunia.data.api.ApiModule;
-import com.imgtec.creator.petunia.data.api.ApiService;
-import com.imgtec.creator.petunia.data.api.CredentialsWrapper;
-import com.imgtec.creator.petunia.data.api.HostWrapper;
-import com.imgtec.di.PerApp;
+public class CredentialsWrapper {
 
-import javax.inject.Named;
+  private String secret;
+  private String token;
 
-import dagger.Component;
-import okhttp3.OkHttpClient;
-
-@PerApp
-@Component(
-    modules = {
-        ApplicationModule.class,
-        DataModuleImpl.class,
-        ApiModule.class
-    }
-)
-public interface ApplicationComponent {
-
-  final class Initializer {
-
-    private Initializer() {}
-
-    static ApplicationComponent init(App application) {
-      return DaggerApplicationComponent
-          .builder()
-          .applicationModule(new ApplicationModule(application))
-          .apiModule(new ApiModule())
-          .build();
-    }
+  public String getSecret() {
+    return secret;
   }
 
-  App inject(App app);
+  public void setSecret(String secret) {
+    this.secret = secret;
+  }
 
-  SharedPreferences getSharedPreferences();
+  public String getToken() {
+    return token;
+  }
 
-  @Named("Main") Handler getHandler();
-
-  HostWrapper getHostWrapper();
-  CredentialsWrapper getCredentialsWrapper();
-
-  DataService getDataService();
-
-  OkHttpClient getOkHttpClient();
-
-  ApiService getApiService();
+  public void setToken(String token) {
+    this.token = token;
+  }
 }
-
